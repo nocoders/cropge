@@ -7,7 +7,7 @@
 	<display-name>Archetype Created Web Application</display-name>
 
 	<filter>
-		<!---->
+		<!--该过滤器用于转码，拦截所有文件-->
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -28,20 +28,27 @@
 	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
-
+<!--web容器同spring容器整合 	-->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<!--修改applicationContext.xml的位置与名称-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:applicationContext.xml
 		</param-value>
 	</context-param>
-<!---->
+<!--springmvc配置，拦截url-->
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!--修改disdispatcher-servlet.xml的名称和位置 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+		</init-param>
+		<!--大于0初始化便加载，其他时被使用才加载-->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
