@@ -51,7 +51,19 @@ public class UserController {
     /**
      * 注册接口
      */
+    @RequestMapping(value = "register.do",method = RequestMethod.GET)
+    @ResponseBody
     public  ServerReponse<String> register(User user){
-
+        return iUserService.register(user);
+    }
+/**
+ *     用户注册时，输入用户名等信息时，直接事实进行判断，该用户名或手机号是否正确，
+ *     \是否已经被使用
+ *     该接口用于判断用户名和邮箱是否被使用
+  */
+    @RequestMapping(value = "checkValid.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerReponse<String> checkValid(String str,String type){
+        return iUserService.checkValid(str,type);
     }
 }

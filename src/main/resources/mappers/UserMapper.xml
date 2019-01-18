@@ -162,4 +162,8 @@
     <include refid="Base_Column_List" />
      from  user_ where username = #{username} and password = #{password}
   </select>
+  <!--检查 email是否存在-->
+  <select id="checkEmail" resultType="int" parameterType="string">
+    select count(1) from user_ where email = #{email}
+  </select>
 </mapper>
