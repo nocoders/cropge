@@ -4,6 +4,7 @@ import com.cropge.common.Const;
 import com.cropge.common.ServerReponse;
 import com.cropge.pojo.User;
 import com.cropge.service.IUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,5 +66,29 @@ public class UserController {
     @ResponseBody
     public ServerReponse<String> checkValid(String str,String type){
         return iUserService.checkValid(str,type);
+    }
+    /**
+     * 获取用户登录请求信息
+     */
+    @RequestMapping(value = "getUserInfo.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerReponse<User> getUserInfo(HttpSession session){
+        User user=(User)session.getAttribute(Const.CURRENT_USER);
+        if (user != null){
+            return ServerReponse.createBySuccess(user);
+        }
+        return ServerReponse.createByErrorMessage("用户未登录");
+    }
+
+//    忘记登录密码,查询找回问题
+    @RequestMapping(value = "forget_get_question.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerReponse<String> forgetPwdAndGetQuestion(String username){
+        return iUserService.selectQuestion(username);
+    }
+//    校验问题答案
+
+    public ServerReponse<String> forgetCheckAnswer(String username,String question,String answer){
+        return iUserService.checkAnswer(username,question,answer);
     }
 }
