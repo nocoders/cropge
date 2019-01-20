@@ -93,9 +93,51 @@ public class UserServiceImpl implements IUserService {
         if (result>0){
 //            问题及问题答案正确
             String forgetToken = UUID.randomUUID().toString();
-            TokenCatch.setKey("token_"+username,forgetToken);
+            TokenCatch.setKey(TokenCatch.TOKEN_PREFIX+username,forgetToken);
             return ServerReponse.createBySuccess(forgetToken);
         }
         return ServerReponse.createByErrorMessage("问题答案错误");
+    }
+
+    public ServerReponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
+//       检查传递过来的token是否有效
+        if (StringUtils.isBlank(forgetToken)){
+            return ServerReponse.createByErrorMessage("参数错误，token未传递");
+        }
+//        检查用户是否存在
+        ServerReponse<String> reponse = this.checkValid(username, Const.USERNAME);
+        if (reponse.isSuccess()){
+            return ServerReponse.createByErrorMessage("用户名不存在");
+        }
+        String token = TokenCatch.getKey(TokenCatch.TOKEN_PREFIX + username);
+//        检查缓存token是否存在
+        if (StringUtils.isBlank(token)){
+            return ServerReponse.createByErrorMessage("token无效或者过期");
+        }
+        if (StringUtils.equals(token,forgetToken)){
+            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+            int rowCount=userMapper.updatePasswordByUsername(username,md5Password);
+            if (rowCount>0){
+                return ServerReponse.createBySuccessMessage("修改密码成功");
+            }
+        }else{
+            return ServerReponse.createByErrorMessage("token错误，请重新获取重置密码的token");
+        }
+        return  ServerReponse.createByErrorMessage("密码修改失败");
+    }
+
+    public ServerReponse<String> resetPassword(String passwordold,String passwordnew,User user){
+//        防止横向越权，检查下该用户的旧密码是否正确
+        int result = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordold), user.getId());
+        if (result == 0){
+            return ServerReponse.createByErrorMessage("旧密码错误");
+        }
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordnew));
+        result=userMapper.updateByPrimaryKeySelective(user);
+        if (result>0){
+            return ServerReponse.createBySuccessMessage("密码更新成功");
+
+        }
+        return ServerReponse.createByErrorMessage("密码更新失败");
     }
 }

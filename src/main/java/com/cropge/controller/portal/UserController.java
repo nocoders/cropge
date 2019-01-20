@@ -87,8 +87,26 @@ public class UserController {
         return iUserService.selectQuestion(username);
     }
 //    校验问题答案
-
+    @RequestMapping(value = "check_question.do",method = RequestMethod.GET)
+    @ResponseBody
     public ServerReponse<String> forgetCheckAnswer(String username,String question,String answer){
         return iUserService.checkAnswer(username,question,answer);
+    }
+//    重置密码
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerReponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
+        return iUserService.forgetResetPassword(username,passwordNew,forgetToken);
+    }
+//    用户登录状态下的密码重置
+    @RequestMapping(value = "login_reset_password.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerReponse<String> resetPassword(HttpSession session,String passwordold,String passwordnew){
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null){
+            return ServerReponse.createByErrorMessage("用户尚未登录");
+
+        }
+        return iUserService.resetPassword(passwordold,passwordnew,user);
     }
 }
