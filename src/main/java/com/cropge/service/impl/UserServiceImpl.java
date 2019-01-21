@@ -136,8 +136,37 @@ public class UserServiceImpl implements IUserService {
         result=userMapper.updateByPrimaryKeySelective(user);
         if (result>0){
             return ServerReponse.createBySuccessMessage("密码更新成功");
-
         }
         return ServerReponse.createByErrorMessage("密码更新失败");
+    }
+
+    public ServerReponse<User> updateInformation(User user){
+//        username 不能被更新
+//        email也要进行校验，检查新的email是否已经存在，并且如果存在的email如果相同的话，不能是我们当前这个用户的
+        int result = userMapper.checkEmailByUserId(user.getEmail(),user.getId());
+        if (result >0){
+            ServerReponse.createByErrorMessage("email 已经被占用，请更换email再尝试");
+        }
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setAnswer(user.getAnswer());
+        updateUser.setQuestion(user.getQuestion());
+
+        result = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (result>0){
+            return ServerReponse.createBySuccess("更新个人信息成功",updateUser);
+        }
+        return ServerReponse.createByErrorMessage("更新个人信息失败");
+    }
+
+    public ServerReponse<User> getInformation(Integer userId){
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user ==null){
+            return ServerReponse.createByErrorMessage("找不到当前用户");
+        }
+        user.setPassword(StringUtils.EMPTY);
+        return ServerReponse.createBySuccess(user);
     }
 }

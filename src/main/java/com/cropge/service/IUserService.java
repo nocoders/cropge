@@ -7,15 +7,19 @@ public interface IUserService {
 
     ServerReponse<User> login(String username, String password);
 
-    public  ServerReponse<String> register(User user);
+    ServerReponse<String> register(User user);
 
-    public ServerReponse<String>checkValid(String str,String type);
+    ServerReponse<String>checkValid(String str,String type);
 
-    public ServerReponse selectQuestion(String username);
+    ServerReponse selectQuestion(String username);
 
-    public ServerReponse<String> checkAnswer(String username,String question,String answer);
+    ServerReponse<String> checkAnswer(String username,String question,String answer);
 
-    public ServerReponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken);
+    ServerReponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken);
 
-    public ServerReponse<String> resetPassword(String passwordold,String passwordnew,User user);
+    ServerReponse<String> resetPassword(String passwordold,String passwordnew,User user);
+
+    ServerReponse<User> updateInformation(User user);
+
+    ServerReponse<User> getInformation(Integer userId);
     }

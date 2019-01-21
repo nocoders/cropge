@@ -40,7 +40,7 @@ public class ServerReponse<T> implements Serializable {
 //    布尔类型数据不需要序列化显示到json里面
     @JsonIgnore
     public boolean isSuccess(){
-        return this.status == ReponseCode.SUCCESS.getCode();
+        return this.status == ResponseCode.SUCCESS.getCode();
     }
 
     public int getStatus() {
@@ -56,25 +56,25 @@ public class ServerReponse<T> implements Serializable {
     }
 
     public static <T> ServerReponse<T>createBySuccess(){
-        return new ServerReponse<T>(ReponseCode.SUCCESS.getCode());
+        return new ServerReponse<T>(ResponseCode.SUCCESS.getCode());
     }
     public static <T> ServerReponse<T>createBySuccessMessage(String msg){
-        return new ServerReponse<T>(ReponseCode.SUCCESS.getCode(),msg);
+        return new ServerReponse<T>(ResponseCode.SUCCESS.getCode(),msg);
     }
 
     public static <T> ServerReponse<T>createBySuccess(T data){
-        return new ServerReponse<T>(ReponseCode.SUCCESS.getCode(),data);
+        return new ServerReponse<T>(ResponseCode.SUCCESS.getCode(),data);
     }
 
     public static <T> ServerReponse<T>createBySuccess(String msg,T data){
-        return new ServerReponse<T>(ReponseCode.SUCCESS.getCode(),msg,data);
+        return new ServerReponse<T>(ResponseCode.SUCCESS.getCode(),msg,data);
     }
 
     public static <T> ServerReponse<T>createByError(){
-        return new ServerReponse<T>(ReponseCode.ERROR.getCode(),ReponseCode.ERROR.getDesc());
+        return new ServerReponse<T>(ResponseCode.ERROR.getCode(), ResponseCode.ERROR.getDesc());
     }
     public static <T> ServerReponse<T>createByErrorMessage(String errorMessage){
-        return new ServerReponse<T>(ReponseCode.ERROR.getCode(),errorMessage);
+        return new ServerReponse<T>(ResponseCode.ERROR.getCode(),errorMessage);
     }
     public static <T> ServerReponse<T>createByErrorCodeMessage(int errorCode,String errorMessage){
         return new ServerReponse<T>(errorCode,errorMessage);
