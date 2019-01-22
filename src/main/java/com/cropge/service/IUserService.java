@@ -1,25 +1,25 @@
 package com.cropge.service;
 
-import com.cropge.common.ServerReponse;
+import com.cropge.common.ServerResponse;
 import com.cropge.pojo.User;
 
 public interface IUserService {
 
-    ServerReponse<User> login(String username, String password);
+    ServerResponse<User> login(String username, String password);
 
-    ServerReponse<String> register(User user);
+    ServerResponse<String> register(User user);
 
-    ServerReponse<String>checkValid(String str,String type);
+    ServerResponse<String> checkValid(String str, String type);
 
-    ServerReponse selectQuestion(String username);
+    ServerResponse selectQuestion(String username);
 
-    ServerReponse<String> checkAnswer(String username,String question,String answer);
+    ServerResponse<String> checkAnswer(String username, String question, String answer);
 
-    ServerReponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken);
+    ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken);
 
-    ServerReponse<String> resetPassword(String passwordold,String passwordnew,User user);
+    ServerResponse<String> resetPassword(String passwordold, String passwordnew, User user);
 
-    ServerReponse<User> updateInformation(User user);
+    ServerResponse<User> updateInformation(User user);
 
-    ServerReponse<User> getInformation(Integer userId);
+    ServerResponse<User> getInformation(Integer userId);
     }
