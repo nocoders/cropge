@@ -1,6 +1,7 @@
 package com.cropge.pojo;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Category {
     private Integer id;
@@ -16,6 +17,20 @@ public class Category {
     private Date createTime;
 
     private Date updateTime;
+//    重写hashcode 和equals方法，只比较id
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public Category(Integer id, Integer parentId, String name, Boolean status, Integer sortOrder, Date createTime, Date updateTime) {
         this.id = id;
@@ -26,6 +41,8 @@ public class Category {
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
+
+
 
     public Category() {
         super();
